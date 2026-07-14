@@ -8,13 +8,12 @@ from src.observability import log_query, load_logs, get_summary_stats
 
 st.set_page_config(
     page_title="RAG Observability",
-    page_icon="🔍",
     layout="wide"
 )
 
-# ── Sidebar ──────────────────────────────────────────────────────────────────
+# Sidebar
 with st.sidebar:
-    st.title("⚙️ Configuration")
+    st.title("Configuration")
     retriever_mode = st.selectbox(
         "Retriever Mode",
         options=["similarity", "mmr", "compressed"],
@@ -23,25 +22,25 @@ with st.sidebar:
     )
     top_k = st.slider("Top-K Documents", min_value=1, max_value=10, value=5)
     st.divider()
-    st.markdown("### 📂 Data Ingestion")
-    if st.button("🔄 Re-ingest Documents", use_container_width=True):
+    st.markdown("### Data Ingestion")
+    if st.button("Re-ingest Documents", use_container_width=True):
         with st.spinner("Ingesting documents into ChromaDB..."):
             run_ingestion()
-        st.success("✅ Documents ingested successfully!")
+        st.success("Documents ingested successfully!")
     st.divider()
-    st.markdown("### 📊 Observability Stats")
+    st.markdown("### Observability Stats")
     stats = get_summary_stats()
     st.metric("Total Queries", stats.get("total_queries", 0))
     st.metric("Avg Latency (s)", stats.get("avg_latency_seconds", "-"))
     st.metric("Avg Sources Used", stats.get("avg_num_sources", "-"))
 
-# ── Main area ─────────────────────────────────────────────────────────────────
-st.title("🔍 RAG Observability Dashboard")
-st.caption("Powered by LangChain · ChromaDB · Ollama · Sentence Transformers")
+# Main area
+st.title("RAG Observability Dashboard")
+st.caption("Powered by LangChain - ChromaDB - Ollama - Sentence Transformers")
 
-tabs = st.tabs(["💬 Chat", "📈 Logs & Metrics"])
+tabs = st.tabs(["Chat", "Logs and Metrics"])
 
-# ── Chat Tab ──────────────────────────────────────────────────────────────────
+# Chat Tab
 with tabs[0]:
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -53,7 +52,7 @@ with tabs[0]:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and "sources" in msg:
-                with st.expander("📄 Sources"):
+                with st.expander("Sources"):
                     for src in msg["sources"]:
                         st.markdown(f"- `{src}`")
 
@@ -72,9 +71,9 @@ with tabs[0]:
             sources = response.get("source_documents", [])
 
             st.markdown(answer)
-            st.caption(f"⏱️ Response time: {latency}s | 📄 Sources used: {len(sources)}")
+            st.caption(f"Response time: {latency}s | Sources used: {len(sources)}")
 
-            with st.expander("📄 Sources"):
+            with st.expander("Sources"):
                 for doc in sources:
                     src = doc.metadata.get("source", "Unknown")
                     st.markdown(f"- `{src}`")
@@ -87,9 +86,9 @@ with tabs[0]:
                 "sources": [doc.metadata.get("source", "Unknown") for doc in sources]
             })
 
-# ── Logs & Metrics Tab ────────────────────────────────────────────────────────
+# Logs and Metrics Tab
 with tabs[1]:
-    st.subheader("📈 Query Logs")
+    st.subheader("Query Logs")
     df = load_logs()
     if df.empty:
         st.info("No queries logged yet. Start chatting to generate logs!")
