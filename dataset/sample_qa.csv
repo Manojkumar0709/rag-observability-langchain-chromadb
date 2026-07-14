@@ -1,0 +1,16 @@
+question,answer
+What is LangChain?,LangChain is a framework for building applications powered by large language models (LLMs). It provides tools for chaining prompts and integrating with external data sources.
+What is ChromaDB?,ChromaDB is an open-source vector database designed for storing and querying embeddings efficiently. It is commonly used in RAG pipelines.
+What is RAG?,Retrieval-Augmented Generation (RAG) is an AI technique that combines information retrieval with text generation. It retrieves relevant documents from a knowledge base and uses them as context for an LLM.
+What is a vector embedding?,A vector embedding is a numerical representation of text in a high-dimensional space. Similar texts have embeddings that are close together in this space.
+What is Ollama?,Ollama is a tool that allows users to run large language models locally on their machines. It supports models like LLaMA, Mistral, and others.
+What is Streamlit?,Streamlit is an open-source Python library that makes it easy to create and share web applications for machine learning and data science projects.
+What is sentence-transformers?,Sentence-transformers is a Python library that provides pre-trained models to compute dense vector representations of sentences and paragraphs.
+What is a prompt template?,A prompt template is a predefined structure used to format input to a language model. It may include placeholders for dynamic content such as user queries or retrieved documents.
+What is a retriever in LangChain?,A retriever in LangChain is a component that fetches relevant documents from a data source based on a query. It is a key component in RAG pipelines.
+What is tiktoken?,Tiktoken is a fast BPE tokenizer developed by OpenAI. It is used to count the number of tokens in a text string for use with OpenAI models.
+What is python-dotenv?,Python-dotenv is a library that reads key-value pairs from a .env file and sets them as environment variables. It is used to manage secrets and configuration.
+What is pypdf?,PyPDF is a Python library for reading and manipulating PDF files. It allows you to extract text and metadata from PDF documents.
+What is observability in AI?,Observability in AI refers to the ability to monitor, trace, and debug AI applications. It includes tracking inputs, outputs, latency, and errors in LLM pipelines.
+What is a vector store?,A vector store is a database optimized for storing and searching vector embeddings. Examples include ChromaDB, Pinecone, and FAISS.
+What is cosine similarity?,Cosine similarity is a metric used to measure how similar two vectors are. It calculates the cosine of the angle between them, with values ranging from -1 to 1.

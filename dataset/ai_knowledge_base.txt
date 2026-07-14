@@ -1,0 +1,36 @@
+# AI & LLM Knowledge Base
+
+## Introduction to Large Language Models
+Large Language Models (LLMs) are deep learning models trained on vast amounts of text data. They are capable of understanding and generating human-like text. Examples include GPT-4, LLaMA, Mistral, and Falcon. These models use the transformer architecture, which relies on self-attention mechanisms to process sequential data.
+
+## Retrieval-Augmented Generation (RAG)
+RAG is a hybrid AI architecture that enhances LLM responses by retrieving relevant information from an external knowledge base before generating an answer. The pipeline typically involves: (1) ingesting documents and converting them to embeddings, (2) storing embeddings in a vector database, (3) retrieving top-k relevant chunks based on a user query, and (4) passing retrieved context along with the query to the LLM.
+
+## LangChain Framework
+LangChain is a popular open-source framework that simplifies building LLM-powered applications. Key components include Chains (sequences of LLM calls), Agents (LLMs that can use tools), Memory (for persisting conversation state), and Retrievers (for fetching documents). LangChain supports integrations with many LLM providers and vector stores.
+
+## ChromaDB Vector Database
+ChromaDB is a lightweight, open-source vector database that runs locally or in the cloud. It supports metadata filtering and similarity search. ChromaDB stores collections of embeddings along with associated documents and metadata. It integrates natively with LangChain and HuggingFace.
+
+## Embeddings
+Embeddings are numerical representations of text in a continuous vector space. Models like sentence-transformers/all-MiniLM-L6-v2 are commonly used to generate embeddings. The quality of embeddings directly impacts retrieval accuracy in RAG pipelines. Embeddings capture semantic meaning, allowing similar documents to cluster together.
+
+## Observability in LLM Applications
+Observability helps developers understand the behavior of their LLM applications. Key metrics include: token usage, latency per chain step, retrieval accuracy, hallucination rate, and user feedback. Tools like LangSmith, Phoenix (Arize), and OpenTelemetry can be used to trace and monitor LangChain pipelines.
+
+## Local LLMs with Ollama
+Ollama enables running LLMs locally without sending data to external APIs. Popular models available via Ollama include LLaMA 3, Mistral 7B, Gemma, and Phi-3. Running models locally improves data privacy and reduces API costs. Ollama exposes a REST API compatible with OpenAI's API format.
+
+## Streamlit for RAG UIs
+Streamlit makes it easy to build interactive frontends for RAG applications. Features like st.chat_input, st.chat_message, and st.session_state enable building conversational UIs. Streamlit apps can be deployed locally or on Streamlit Community Cloud. Integration with LangChain is straightforward via Python callbacks.
+
+## Document Loaders
+LangChain provides loaders for many file types including PDF, CSV, HTML, and plain text. PyPDFLoader is used to load and split PDF documents. TextLoader handles plain text files. After loading, documents are split into chunks using text splitters like RecursiveCharacterTextSplitter before being embedded and stored.
+
+## Best Practices for RAG
+1. Chunk documents into overlapping segments (e.g., 500 tokens with 50-token overlap) for better context.
+2. Use metadata filters to narrow retrieval scope.
+3. Experiment with top-k retrieval values (typically 3-5).
+4. Evaluate retrieval quality separately from generation quality.
+5. Use re-ranking models to improve retrieved document relevance.
+6. Monitor and log all queries and responses for debugging.
