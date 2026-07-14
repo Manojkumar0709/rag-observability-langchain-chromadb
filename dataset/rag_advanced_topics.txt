@@ -1,0 +1,43 @@
+# Advanced RAG Topics and Techniques
+
+## Naive RAG vs Advanced RAG
+Naive RAG follows a simple pipeline: index documents, retrieve top-k chunks, and generate a response. While effective for simple use cases, it suffers from limitations including poor retrieval quality, lack of context, and hallucinations. Advanced RAG introduces improvements at every stage. Pre-retrieval improvements include better chunking strategies, metadata enrichment, and query rewriting. Retrieval improvements include hybrid search, re-ranking, and contextual compression. Post-retrieval improvements include answer verification, citation grounding, and iterative refinement.
+
+## Chunking Strategies
+Chunking splits documents into smaller pieces before embedding and storing them. Fixed-size chunking splits documents into chunks of a fixed number of tokens with optional overlap. Recursive character splitting uses a hierarchy of separators (paragraph, sentence, word) to create natural chunks. Semantic chunking groups sentences by semantic similarity. Document-based chunking respects document structure (sections, paragraphs). Parent-child chunking stores small child chunks for retrieval but passes larger parent chunks to the LLM for context. The optimal chunk size depends on the embedding model, LLM context window, and document type.
+
+## Hybrid Search
+Hybrid search combines dense (semantic) and sparse (keyword) retrieval for better results. Dense retrieval uses embedding-based similarity search to find semantically relevant documents. Sparse retrieval uses BM25 or TF-IDF to find keyword-matched documents. Combining both approaches captures both semantic similarity and exact keyword matches. Reciprocal Rank Fusion (RRF) is a popular method for merging results from multiple retrieval systems. Hybrid search is particularly useful for domain-specific queries with technical terminology that may not be well-represented in embedding spaces.
+
+## Re-ranking
+Re-ranking improves retrieval quality by applying a more powerful model to re-score initially retrieved documents. Cross-encoder models jointly encode the query and each candidate document, providing more accurate relevance scores than bi-encoder retrieval. Models like Cohere Rerank, BGE-Reranker, and ms-marco-MiniLM are commonly used. Re-ranking adds latency but significantly improves precision. Maximal Marginal Relevance (MMR) balances relevance and diversity when selecting final documents. Re-ranking is a key component of production RAG systems.
+
+## Query Transformation
+Query transformation techniques modify the user query before retrieval to improve results. Query rewriting uses an LLM to reformulate the query for better retrieval. Query expansion generates multiple related queries and merges results (multi-query retrieval). HyDE (Hypothetical Document Embeddings) generates a hypothetical answer to the query and uses it for retrieval. Step-back prompting abstracts the query to a higher level before retrieval. Query decomposition breaks complex queries into sub-queries. These techniques help handle ambiguous, complex, or poorly-phrased user queries.
+
+## Contextual Compression
+Contextual compression reduces the retrieved context to only the most relevant parts before passing it to the LLM. This addresses the issue of retrieved chunks containing irrelevant information that can confuse the model. LLMChainExtractor uses an LLM to extract relevant sentences from each retrieved document. EmbeddingsFilter removes documents below a similarity threshold. DocumentCompressorPipeline chains multiple compression steps. Compression reduces token usage (and thus cost), allows fitting more documents in the context window, and improves answer quality.
+
+## Graph RAG
+Graph RAG enhances retrieval by representing knowledge as a graph of entities and relationships. Documents are processed to extract entities and relationships, which are stored in a knowledge graph. During retrieval, graph traversal finds relevant subgraphs in addition to or instead of vector search. Microsoft's GraphRAG uses community detection to build hierarchical summaries of the graph. Graph RAG is particularly effective for multi-hop reasoning questions that require connecting information across multiple documents. Tools like Neo4j, NetworkX, and LlamaIndex's Knowledge Graph Index support graph-based RAG.
+
+## Multi-modal RAG
+Multi-modal RAG extends traditional RAG to handle multiple data modalities beyond text. It can retrieve and reason over images, tables, charts, audio, and video. Vision-language models (VLMs) like GPT-4V, LLaVA, and CLIP are used to embed and process visual content. Tables can be embedded as text or using specialized table-understanding models. ColPali uses vision models to directly retrieve from document images without OCR. Multi-modal RAG is valuable for processing documents containing figures, diagrams, and mixed-format content like PDFs and presentations.
+
+## RAG Evaluation
+Evaluating RAG systems requires assessing both retrieval and generation components. Retrieval metrics include precision@k, recall@k, Mean Reciprocal Rank (MRR), and Normalized Discounted Cumulative Gain (NDCG). Generation metrics include faithfulness (does the answer match the context?), answer relevancy (does the answer address the question?), and context relevancy (is the retrieved context relevant?). Frameworks like RAGAS, TruLens, and DeepEval provide automated RAG evaluation. The RAG Triad (context relevance, groundedness, answer relevance) is a popular evaluation framework.
+
+## Agentic RAG
+Agentic RAG gives the retrieval system agency to plan and execute complex multi-step retrieval strategies. Instead of a single retrieval step, an agent can decide when to retrieve, what to retrieve, and how to combine results. ReAct agents alternate between reasoning and action (retrieval). Plan-and-Execute agents first create a plan and then execute each step. Self-RAG trains the LLM to generate special tokens to decide when and how to retrieve. Corrective RAG (CRAG) adds a knowledge refinement step that evaluates retrieved documents and falls back to web search if needed.
+
+## Memory in RAG Systems
+Memory allows RAG systems to maintain context across multiple turns of a conversation. Short-term memory stores the recent conversation history in the prompt context. Long-term memory persists information across sessions using a vector store or database. Episodic memory stores specific interaction examples for later retrieval. Semantic memory stores general knowledge and facts. Entity memory tracks information about specific entities mentioned in the conversation. LangChain provides several memory implementations including ConversationBufferMemory, ConversationSummaryMemory, and VectorStoreRetrieverMemory.
+
+## Indexing Strategies
+Efficient indexing is critical for RAG system performance. Flat indexing stores all vectors and performs exact nearest neighbor search — accurate but slow for large collections. HNSW (Hierarchical Navigable Small World) is an approximate nearest neighbor index that offers fast search with high recall. IVF (Inverted File Index) clusters vectors into partitions for faster search. Product Quantization (PQ) compresses vectors to reduce memory usage. ChromaDB uses HNSW by default. FAISS supports multiple index types. Pinecone and Weaviate provide managed vector indexing with automatic optimization.
+
+## Streaming and Real-time RAG
+Streaming allows RAG systems to start delivering responses before the full generation is complete, improving perceived latency. LangChain supports streaming via callbacks and the streaming parameter in LLM constructors. Streamlit's st.write_stream can display streamed responses in real time. Async RAG pipelines use Python's asyncio to parallelize retrieval and other operations. Real-time RAG can index new documents dynamically as they are added, ensuring the knowledge base is always up to date. Event-driven architectures using message queues (Kafka, RabbitMQ) can trigger re-indexing when documents are updated.
+
+## Security and Safety in RAG
+RAG systems face unique security and safety challenges. Prompt injection attacks attempt to manipulate the LLM by embedding malicious instructions in retrieved documents. Data leakage can occur if sensitive information is retrieved and included in responses. Access control should restrict which users can retrieve which documents. Input validation and output filtering help prevent harmful content. Hallucination detection systems flag responses that are not grounded in retrieved context. Adversarial testing (red-teaming) should be performed to identify vulnerabilities before deployment.

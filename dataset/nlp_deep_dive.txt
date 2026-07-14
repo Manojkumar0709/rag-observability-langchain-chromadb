@@ -1,0 +1,43 @@
+# Natural Language Processing - Deep Dive
+
+## Tokenization
+Tokenization is the process of splitting text into smaller units called tokens. Word tokenization splits text at word boundaries. Subword tokenization (BPE, WordPiece, SentencePiece) splits rare words into subword units, balancing vocabulary size and coverage. Character tokenization splits text into individual characters. Modern LLMs like GPT use Byte-Pair Encoding (BPE), which starts with characters and iteratively merges the most frequent pairs. Tokenization directly affects model vocabulary size, input length, and how well the model handles rare or out-of-vocabulary words.
+
+## Word Embeddings
+Word embeddings represent words as dense vectors in a continuous vector space. Word2Vec (2013) introduced two training approaches: CBOW (predicts a word from its context) and Skip-gram (predicts context from a word). GloVe (Global Vectors) learns embeddings from global word co-occurrence statistics. FastText extends Word2Vec by representing words as bags of character n-grams, handling out-of-vocabulary words. These static embeddings assign one vector per word regardless of context. Contextual embeddings (ELMo, BERT) generate different vectors for the same word depending on its context.
+
+## BERT and Bidirectional Transformers
+BERT (Bidirectional Encoder Representations from Transformers) was introduced by Google in 2018. Unlike GPT, BERT reads text bidirectionally, considering both left and right context simultaneously. It is pre-trained using Masked Language Modeling (MLM, randomly masking tokens and predicting them) and Next Sentence Prediction (NSP). BERT is an encoder-only model, making it ideal for tasks like text classification, named entity recognition, question answering, and sentence similarity. Variants include RoBERTa, DistilBERT, ALBERT, and DeBERTa.
+
+## GPT and Autoregressive Language Models
+GPT (Generative Pre-trained Transformer) models are decoder-only transformers trained to predict the next token in a sequence. GPT-1 demonstrated that unsupervised pre-training followed by fine-tuning works well for NLP tasks. GPT-2 showed that scaling yields impressive text generation capabilities. GPT-3 (175B parameters) demonstrated strong few-shot learning. GPT-4 is a multimodal model capable of processing both text and images. The key strength of GPT models is their ability to follow instructions and generate coherent, contextually relevant text.
+
+## Attention Mechanism
+Attention allows models to focus on the most relevant parts of the input when generating each output token. Scaled dot-product attention computes attention scores as the dot product of queries and keys, scaled by the square root of the key dimension, followed by a softmax. Multi-head attention runs multiple attention operations in parallel, allowing the model to attend to different aspects of the input simultaneously. Self-attention allows each position to attend to all other positions in the same sequence. Cross-attention (used in encoder-decoder models) allows the decoder to attend to encoder outputs.
+
+## Named Entity Recognition (NER)
+NER is the task of identifying and classifying named entities in text into predefined categories such as person names, organizations, locations, dates, and quantities. Traditional NER approaches used hand-crafted features with CRF or HMM models. Neural approaches use BiLSTM-CRF or transformer-based models. Pre-trained models like BERT fine-tuned on NER datasets achieve state-of-the-art performance. NER is a foundational task in information extraction pipelines used in applications like search, knowledge graph construction, and document analysis.
+
+## Text Classification
+Text classification assigns predefined categories to text documents. Applications include sentiment analysis, spam detection, topic classification, intent recognition, and hate speech detection. Classical methods use TF-IDF features with logistic regression or SVM. Deep learning methods use CNN, LSTM, or transformer-based models. Fine-tuning BERT or RoBERTa on labeled data achieves state-of-the-art results on most classification benchmarks. Zero-shot and few-shot classification using LLMs (e.g., GPT-4) is increasingly popular when labeled data is scarce.
+
+## Machine Translation
+Machine translation (MT) is the task of automatically translating text from one language to another. Early MT systems used rule-based approaches. Statistical MT (SMT) uses phrase-based models trained on parallel corpora. Neural MT (NMT) using sequence-to-sequence models with attention dominated from 2016 onward. Transformer-based models (e.g., MarianMT, mBART, NLLB) achieve near-human performance on high-resource language pairs. Challenges remain for low-resource languages, domain-specific terminology, and handling cultural nuances.
+
+## Question Answering
+Question answering (QA) systems automatically answer questions posed in natural language. Extractive QA extracts answer spans from a provided context document (e.g., SQuAD benchmark). Abstractive QA generates answers that may not appear verbatim in the source. Open-domain QA retrieves relevant documents from a large corpus before extracting answers. RAG is a powerful approach for open-domain QA, combining retrieval with generation. Models like T5, BART, and GPT-4 are commonly used for abstractive QA.
+
+## Summarization
+Text summarization condenses long documents into shorter versions. Extractive summarization selects and concatenates important sentences from the source. Abstractive summarization generates new sentences that capture the key information. Models like T5, BART, PEGASUS, and GPT-4 are state-of-the-art for abstractive summarization. Evaluation metrics include ROUGE (Recall-Oriented Understudy for Gisting Evaluation), which measures n-gram overlap between generated and reference summaries. Long-document summarization (e.g., legal documents, scientific papers) remains challenging due to context length limitations.
+
+## Semantic Search
+Semantic search goes beyond keyword matching to understand the intent and meaning behind a query. It uses dense vector representations (embeddings) to find semantically similar documents. Bi-encoder models (e.g., Sentence-BERT) encode queries and documents independently into dense vectors, enabling efficient approximate nearest neighbor search. Cross-encoder models re-rank retrieved results by jointly encoding the query and document, achieving higher accuracy at the cost of speed. Semantic search powers modern RAG systems, recommendation engines, and enterprise search platforms.
+
+## Prompt Engineering
+Prompt engineering is the practice of designing effective input prompts to guide LLM behavior. Zero-shot prompting provides only the task description. Few-shot prompting includes example input-output pairs. Chain-of-thought (CoT) prompting encourages step-by-step reasoning. Instruction tuning trains models to follow natural language instructions. System prompts set the context and persona for the model. Advanced techniques include Tree of Thoughts, ReAct (reasoning + acting), and Self-Consistency. Effective prompt engineering can significantly improve LLM performance without any fine-tuning.
+
+## Fine-tuning LLMs
+Fine-tuning adapts a pre-trained LLM to a specific task or domain. Full fine-tuning updates all model parameters, requiring significant compute. Parameter-Efficient Fine-Tuning (PEFT) methods update only a small subset of parameters. LoRA (Low-Rank Adaptation) adds small trainable rank decomposition matrices to transformer layers. QLoRA combines quantization with LoRA for memory-efficient fine-tuning. Instruction fine-tuning trains models to follow instructions using datasets like Alpaca or FLAN. RLHF (Reinforcement Learning from Human Feedback) aligns models with human preferences.
+
+## Text Generation and Decoding Strategies
+Decoding strategies control how LLMs generate text token by token. Greedy decoding always selects the highest probability token. Beam search maintains multiple candidate sequences and selects the best. Top-k sampling samples from the k most probable tokens. Top-p (nucleus) sampling samples from the smallest set of tokens whose cumulative probability exceeds p. Temperature scaling controls the randomness of the distribution. Repetition penalty discourages repeated tokens. The choice of decoding strategy affects the creativity, coherence, and diversity of generated text.
